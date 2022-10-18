@@ -9,7 +9,7 @@ enum MethodKey {
   "PATCH",
 }
 
-interface FetchOptions {
+export interface FetchOptions {
   body: FormData;
   json: object;
   mode: string;
@@ -42,7 +42,7 @@ export class Extracts {
 
   protected fetch = async <TypeResult>(
     path = "/",
-    method: keyof typeof MethodKey = "GET",
+    method: keyof typeof MethodKey,
     { body, json, params, headers, manualUrl = false, ...opts }: Partial<FetchOptions> = {},
   ): Promise<TypeResult> => {
     const search = params ? encode(params, "?") : "";

@@ -1,4 +1,4 @@
-import { Extracts } from "./main";
+import { Extracts, FetchOptions } from "./main";
 
 type UnfetchResponse<Res = never> = {
   ok: boolean;
@@ -12,20 +12,24 @@ type UnfetchResponse<Res = never> = {
 };
 
 class Fetch extends Extracts {
-  get = async <TypeResult>(url: string) => {
-    return await this.fetch<UnfetchResponse<TypeResult>>(url, "GET");
+  get = async <TypeResult, Props = any>(url: string, prop: Props) => {
+    return await this.fetch<UnfetchResponse<TypeResult>>(url, "GET", { ...prop });
   };
 
-  delete = async (url: string) => {
-    return await this.fetch<UnfetchResponse>(url, "DELETE");
+  delete = async <TypeResult, Props = any>(url: string, prop: Props) => {
+    return await this.fetch<UnfetchResponse<TypeResult>>(url, "DELETE", { ...prop });
   };
 }
 
 const fetch = new Fetch();
 
-const gets = <TypeResult = any>(url: string) => fetch.get<TypeResult>(url);
+const gets = <TypeResult = any>(url: string, prop?: Partial<FetchOptions>) => {
+  return fetch.get<TypeResult>(url, { ...prop });
+};
 
-const deletes = (url: string) => fetch.delete(url);
+const deletes = <TypeResult = any>(url: string, prop?: Partial<FetchOptions>) => {
+  return fetch.delete<TypeResult>(url, { ...prop });
+};
 
 export { gets, deletes };
 
