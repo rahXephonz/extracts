@@ -22,7 +22,7 @@ export default [
     ],
 
     preserveModules: true,
-    external: [],
+    external: ["qss", "unfetch"],
   },
   {
     input: ["src/index.ts"],

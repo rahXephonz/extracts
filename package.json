@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "description": "a package that simplyfy your fetch request",
   "private": true,
-  "main": "src/main.ts",
+  "main": "src/index.ts",
   "scripts": {
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "build": "rollup -c",
+    "dev": "yarn build --watch"
   },
   "dependencies": {
     "qss": "^2.0.3",
