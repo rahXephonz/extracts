@@ -12,11 +12,15 @@ type UnfetchResponse<Res = never> = {
 };
 
 type PickText = Pick<UnfetchResponse, "text">;
-type PickJSON<T> = Pick<UnfetchResponse<T>, "json">;
+type PickJSON<Res> = Pick<UnfetchResponse<Res>, "json">;
 
 class Fetch extends Extracts {
   get = async <TypeResult, Props = any>(url: string, prop: Props) => {
     return await this.fetch<UnfetchResponse<TypeResult>>(url, "GET", { ...prop });
+  };
+
+  delete = async <TypeResult, Props = any>(url: string, prop: Props) => {
+    return await this.fetch<UnfetchResponse<TypeResult>>(url, "DELETE", { ...prop });
   };
 
   fetchText = async <Props = any>(url: string, prop: Props) => {
@@ -26,10 +30,6 @@ class Fetch extends Extracts {
   fetchJSON = async <TypeResult, Props = any>(url: string, prop: Props) => {
     return await this.fetch<PickJSON<TypeResult>>(url, "GET", { ...prop }).then(res => res.json());
   };
-
-  delete = async <TypeResult, Props = any>(url: string, prop: Props) => {
-    return await this.fetch<UnfetchResponse<TypeResult>>(url, "DELETE", { ...prop });
-  };
 }
 
 const fetch = new Fetch();
@@ -38,18 +38,23 @@ const gets = <Res = any>(url: string, prop?: Partial<FetchOptions>) => {
   return fetch.get<Res>(url, { ...prop });
 };
 
-const fetchJSON = async <Res = any>(url: string, prop?: Partial<FetchOptions>) => {
+const fetchJSON = <Res = any>(url: string, prop?: Partial<FetchOptions>) => {
   return fetch.fetchJSON<Res>(url, { ...prop });
+};
+
+const fetchText = (url: string, prop?: Partial<FetchOptions>) => {
+  return fetch.fetchText(url, { ...prop });
 };
 
 const deletes = <Res = any>(url: string, prop?: Partial<FetchOptions>) => {
   return fetch.delete<Res>(url, { ...prop });
 };
 
-export { gets, deletes, fetchJSON };
+export { gets, deletes, fetchJSON, fetchText };
 
 export default {
   gets,
   deletes,
   fetchJSON,
+  fetchText,
 };
