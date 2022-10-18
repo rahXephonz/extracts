@@ -1,5 +1,5 @@
 {
-  "name": "extract",
+  "name": "extracts",
   "version": "1.0.0",
   "description": "a package that simplyfy your fetch request",
   "private": true,
