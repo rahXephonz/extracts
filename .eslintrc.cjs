@@ -11,6 +11,14 @@ module.exports = {
     sourceType: "module",
   },
   plugins: ["@typescript-eslint"],
+  overrides: [
+    {
+      files: ["**/*.test.ts"],
+      env: {
+        jest: true,
+      },
+    },
+  ],
   rules: {
     // note you must disable the base rule as it can report incorrect errors
     "no-use-before-define": "off",

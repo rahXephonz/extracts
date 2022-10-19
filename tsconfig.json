@@ -4,8 +4,12 @@
     "module": "esnext",
     "target": "esnext",
     "declaration": false,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "allowJs": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
   },
   "include": ["src"],
-  "exclude": ["node_modules", "dist"]
+  "exclude": ["node_modules", "dist", "src/__test__", "**/*.spec.ts", "**/*.test.ts"]
 }
