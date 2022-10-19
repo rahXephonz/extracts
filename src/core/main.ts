@@ -39,7 +39,7 @@ export class Extracts {
   ): Promise<UnfetchResponse<TypeResult>> => {
     const search = params ? encode(params, "?") : "";
 
-    const url = manualUrl ? path : `${process.env.API_KEY}${path}${search}`;
+    const url = manualUrl ? path : `${path}${search}`;
 
     const resp = await _fetch(url, {
       method,
