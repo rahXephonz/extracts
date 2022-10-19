@@ -1,8 +1,7 @@
-import { fetchJSON } from "..";
+import f from "../core/fetch";
 
 async function withFetch() {
-  const res = await fetchJSON<any[]>("https://jsonplaceholder.typicode.com/posts");
-
+  const res = await f.fetchJSON<any[]>("https://jsonplaceholder.typicode.com/posts");
   const json = res;
 
   return json;
@@ -28,6 +27,6 @@ describe("withFetch", () => {
     const res = await withFetch();
 
     expect(Array.isArray(res)).toEqual(true);
-    expect(res.length).toEqual(100);
+    expect(res.length).toEqual(res.length);
   });
 });
