@@ -31,7 +31,7 @@ interface Errors {
 }
 
 export class Extracts {
-  constructor(public urlApi?: string, public isPrivate = false) {
+  constructor(public urlApi = "", public isPrivate = false) {
     this.urlApi = urlApi;
     this.isPrivate = isPrivate;
   }

@@ -1,6 +1,6 @@
 {
   "name": "extracts",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "a package that simplyfy your fetch request with type definitions",
   "private": false,
   "homepage": "https://github.com/ioofy/extracts",
@@ -14,7 +14,7 @@
     "rebuild": "rimraf dist && yarn build",
     "dev": "yarn build --watch",
     "test": "jest",
-    "prepublish": "yarn rebuild"
+    "prepublish": "yarn test && yarn rebuild"
   },
   "dependencies": {
     "qss": "^2.0.3",
