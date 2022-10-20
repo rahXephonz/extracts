@@ -33,7 +33,7 @@ Run one of the following command inside your project directory to install the pa
 <td>
 
 ```typescript
-// test with zod
+// test with zod and React
 import { fetchJSON } from "extracts";
 import z from "zod";
 
@@ -45,9 +45,16 @@ const TypeUser = z.objects({
 
 type UserDatum = z.infer<typeof TypeUser>;
 
-const res = async () => {
-  return await fetchJSON<UserDatum[]>("https://jsonplaceholder.typicode.com/users");
-};
+const [user, setUser] = useState<UserDatum[]>([]);
+
+useEffect(() => {
+  // this code will running as async
+  (async function () {
+    const res = await fetchJSON<UserDatum[]>("https://jsonplaceholder.typicode.com/users");
+
+    setUser(res);
+  })();
+}, []);
 ```
 
 </td>
@@ -56,10 +63,9 @@ const res = async () => {
 
 ```typescript
 const showData = () => {
-  if (res) {
+  if (user) {
     // type definitions will be added
-    const user = res.map(item => item);
-    return JSON.stringify(user);
+    console.log(user.length);
   }
 };
 ```
