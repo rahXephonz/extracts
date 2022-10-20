@@ -37,7 +37,7 @@ class Fetch extends Extracts {
   };
 
   fetchJSON = async <TypeResult, Props = any>(url: string, prop: Props) => {
-    return await this.fetch<TypeResult>(url, "GET", { ...prop }).then(res => res.json());
+    return await this.fetchjson<TypeResult>(url, "GET", { ...prop });
   };
 }
 

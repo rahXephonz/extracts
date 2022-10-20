@@ -93,7 +93,7 @@ export class CoreAPI extends Extracts {
 
 class Activity extends CoreAPI {
   getDetailActivities = async (id: number) => {
-    return await this.fetch<Activities>(`/activity-groups/${id}`, "GET");
+    return await this.fetchOnlyjson<Activities>(`/activity-groups/${id}`, "GET");
   };
 
   deleteActivities = async (id: number) => {
