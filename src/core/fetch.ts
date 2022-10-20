@@ -1,5 +1,16 @@
 import { Extracts, type FetchOptions } from "./main";
 
+export interface UnfetchResponse<Res = any> {
+  ok: boolean;
+  statusText: string;
+  status: number;
+  url: string;
+  text: () => Promise<string>;
+  json: () => Promise<Res>;
+  blob: () => Promise<Blob>;
+  clone: () => UnfetchResponse<Res>;
+}
+
 class Fetch extends Extracts {
   get = async <TypeResult, Props = any>(url: string, prop: Props) => {
     return await this.fetch<TypeResult>(url, "GET", { ...prop });
@@ -60,14 +71,4 @@ const fetchText = (url: string, prop?: Partial<FetchOptions>) => {
   return fetch.fetchText(url, { ...prop });
 };
 
-export { gets, deletes, patchs, posts, fetchJSON, fetchText };
-
-export default {
-  gets,
-  puts,
-  patchs,
-  posts,
-  deletes,
-  fetchJSON,
-  fetchText,
-};
+export { gets, puts, deletes, patchs, posts, fetchJSON, fetchText };

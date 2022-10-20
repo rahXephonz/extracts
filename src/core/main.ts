@@ -1,4 +1,5 @@
 import { encode } from "qss";
+import type { UnfetchResponse } from "./fetch";
 import _fetch from "unfetch";
 
 enum MethodKey {
@@ -20,18 +21,26 @@ export interface FetchOptions {
   manualUrl: boolean;
 }
 
-type UnfetchResponse<Res = any> = {
-  ok: boolean;
-  statusText: string;
-  status: number;
-  url: string;
-  text: () => Promise<string>;
-  json: () => Promise<Res>;
-  blob: () => Promise<Blob>;
-  clone: () => UnfetchResponse<Res>;
-};
+interface Errors {
+  status?: number;
+  name?: string;
+  json?: any;
+  response?: {
+    [k: string]: any;
+  };
+}
 
 export class Extracts {
+  private intercept500Error = async (err: Errors) => {
+    if (err?.status === 500) {
+      const customErr = {
+        ...err,
+        message: `We seem to be experiencing a problem right now. Try again later`,
+      };
+      await Promise.reject(customErr);
+    }
+  };
+
   protected fetch = async <TypeResult>(
     path = "/",
     method: keyof typeof MethodKey,
@@ -41,21 +50,47 @@ export class Extracts {
 
     const url = manualUrl ? path : `${path}${search}`;
 
-    const resp = await _fetch(url, {
-      method,
-      headers: {
-        ...json,
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        ...headers,
-      },
-      ...opts,
-      body: body || (json ? JSON.stringify(json) : null),
-      // credentials: 'include', // disabled
-    });
+    try {
+      const resp = await _fetch(url, {
+        method,
+        headers: {
+          ...json,
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          ...headers,
+        },
+        ...opts,
+        body: body || (json ? JSON.stringify(json) : null),
+      });
 
-    if (!resp?.ok) return await Promise.reject(Error);
+      if (!resp?.ok) return await Promise.reject(Error);
 
-    return resp;
+      return resp;
+    } catch (err: unknown) {
+      const msg = err as Errors;
+      process.env.NODE_ENV === "development" && console.log("err", err);
+
+      if (err instanceof Error) {
+        // deal with network error / CORS error
+        if (err.name === "TypeError" && err.message === "Failed to fetch") {
+          console.error("Failed to get proper response from api server", err);
+        }
+
+        this.intercept500Error(err);
+      }
+
+      // get response
+      if (typeof msg.json === "function") {
+        const data = await msg.json();
+        msg.response = { data };
+      }
+
+      if (typeof msg?.response?.json === "function") {
+        const data = await msg.response.json();
+        msg.response = { data };
+      }
+
+      return await Promise.reject(err);
+    }
   };
 }

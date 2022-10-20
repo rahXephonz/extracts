@@ -1,12 +1,17 @@
 {
   "name": "extracts",
   "version": "1.0.0",
-  "description": "a package that simplyfy your fetch request",
+  "description": "a package that simplyfy your fetch request with type definitions",
   "private": true,
-  "main": "src/index.ts",
+  "homepage": "https://github.com/ioofy/extracts",
+  "repository": "https://github.com/ioofy/extracts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
   "scripts": {
     "prepare": "husky install",
     "build": "rollup -c",
+    "rebuild": "rimraf dist && yarn build",
     "dev": "yarn build --watch",
     "test": "jest"
   },
@@ -51,5 +56,8 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

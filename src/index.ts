@@ -1,1 +1,2 @@
-export * from "./core";
+export * from "./core/fetch";
+export * from "./core/main";

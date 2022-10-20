@@ -1,7 +1,7 @@
-import f from "../core/fetch";
+import { fetchJSON } from "../core/fetch";
 
 async function withFetch() {
-  const res = await f.fetchJSON<any[]>("https://jsonplaceholder.typicode.com/posts");
+  const res = await fetchJSON<any[]>("https://jsonplaceholder.typicode.com/users");
   const json = res;
 
   return json;
@@ -23,10 +23,10 @@ afterAll(() => {
 
 // This is actual testing suite
 describe("withFetch", () => {
-  test("works", async () => {
+  test("it should be expect array from API", async () => {
     const res = await withFetch();
 
     expect(Array.isArray(res)).toEqual(true);
-    expect(res.length).toEqual(res.length);
+    expect(res.length).toEqual(10);
   });
 });
