@@ -80,7 +80,16 @@ const showData = () => {
 import { Activities } from "@types/data";
 import { Extracts } from "extracts";
 
-class Activity extends Extracts {
+export class CoreAPI extends Extracts {
+  // override url and assign your api url, and assign this service is private
+  // default url API is "/" and private false
+
+  constructor() {
+    super("/api/your-path", true);
+  }
+}
+
+class Activity extends CoreAPI {
   getDetailActivities = async (id: number) => {
     return await this.fetch<Activities>(`/activity-groups/${id}`, "GET");
   };

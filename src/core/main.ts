@@ -31,6 +31,19 @@ interface Errors {
 }
 
 export class Extracts {
+  constructor(public url = "/", public isPrivate = false) {
+    this.url = url;
+    this.isPrivate = isPrivate;
+  }
+
+  getToken() {
+    // your code in here how you get your token
+  }
+
+  setToken() {
+    // your code in here how you set your token
+  }
+
   private intercept500Error = async (err: Errors) => {
     if (err?.status === 500) {
       const customErr = {
@@ -41,14 +54,18 @@ export class Extracts {
     }
   };
 
-  protected fetch = async <TypeResult>(
-    path = "/",
+  fetch = async <TypeResult>(
+    path = this.url,
     method: keyof typeof MethodKey,
-    { body, json, params, headers, manualUrl = true, ...opts }: Partial<FetchOptions> = {},
+    { body, json, params, headers, manualUrl = false, isPrivate = this.isPrivate, ...opts }: Partial<FetchOptions> = {},
   ): Promise<UnfetchResponse<TypeResult>> => {
     const search = params ? encode(params, "?") : "";
 
     const url = manualUrl ? path : `${path}${search}`;
+
+    if (isPrivate) {
+      this.getToken();
+    }
 
     try {
       const resp = await _fetch(url, {
