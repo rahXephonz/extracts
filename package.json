@@ -2,7 +2,7 @@
   "name": "extracts",
   "version": "1.0.0",
   "description": "a package that simplyfy your fetch request with type definitions",
-  "private": true,
+  "private": false,
   "homepage": "https://github.com/ioofy/extracts",
   "repository": "https://github.com/ioofy/extracts",
   "main": "dist/index.js",
