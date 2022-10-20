@@ -12,6 +12,10 @@ export interface UnfetchResponse<Res = any> {
 }
 
 class Fetch extends Extracts {
+  constructor() {
+    super();
+  }
+
   get = async <TypeResult, Props = any>(url: string, prop: Props) => {
     return await this.fetch<TypeResult>(url, "GET", { ...prop });
   };
