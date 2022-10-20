@@ -31,8 +31,8 @@ interface Errors {
 }
 
 export class Extracts {
-  constructor(public url = "/", public isPrivate = false) {
-    this.url = url;
+  constructor(public urlApi?: string, public isPrivate = false) {
+    this.urlApi = urlApi;
     this.isPrivate = isPrivate;
   }
 
@@ -55,17 +55,15 @@ export class Extracts {
   };
 
   fetch = async <TypeResult>(
-    path = this.url,
+    path = "/",
     method: keyof typeof MethodKey,
     { body, json, params, headers, manualUrl = false, isPrivate = this.isPrivate, ...opts }: Partial<FetchOptions> = {},
   ): Promise<UnfetchResponse<TypeResult>> => {
     const search = params ? encode(params, "?") : "";
 
-    const url = manualUrl ? path : `${path}${search}`;
+    const url = manualUrl ? path : `${this.urlApi}${path}${search}`;
 
-    if (isPrivate) {
-      this.getToken();
-    }
+    if (isPrivate) this.getToken();
 
     try {
       const resp = await _fetch(url, {

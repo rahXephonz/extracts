@@ -87,6 +87,8 @@ export class CoreAPI extends Extracts {
   constructor() {
     super("/api/your-path", true);
   }
+
+  // your logic API goes here when use token or not (isPrivate)
 }
 
 class Activity extends CoreAPI {
