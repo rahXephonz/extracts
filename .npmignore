@@ -100,3 +100,13 @@ $RECYCLE.BIN/
 
 # Cache
 .eslintcache
+
+# Utility
+src/
+.eslintrc.cjs
+.prettierrc.cjs
+commitlint.config.cjs
+jest.config.js
+rollup.config.js
+tsconfig.json
+.gitignore
