@@ -62,12 +62,11 @@ useEffect(() => {
 <td>
 
 ```typescript
-const showData = () => {
-  if (user) {
-    // type definitions will be added
-    console.log(user.length);
-  }
-};
+// will be convert to
+const res = await fetch("https://jsonplaceholder.typicode.com/users").then(resp => resp.json);
+// but adding type definitions
+const data = res.map(item => item);
+// and in above example we assign into state ;)
 ```
 
 </td>
@@ -93,19 +92,19 @@ export class CoreAPI extends Extracts {
 
 class Activity extends CoreAPI {
   getDetailActivities = async (id: number) => {
-    return await this.fetchOnlyjson<Activities>(`/activity-groups/${id}`, "GET");
+    return await this.fetchjson<Activities>(`/activity-groups/${id}`, "GET");
   };
 
   deleteActivities = async (id: number) => {
-    return await this.fetch(`/activity-groups/${id}`, "DELETE");
+    return await this.fetchjson(`/activity-groups/${id}`, "DELETE");
   };
 
   getAllActivities = async () => {
-    return await this.fetch<{ data: Activities[] }>("/activity-groups?email=mynev.id@gmail.com", "GET");
+    return await this.fetchjson<{ data: Activities[] }>("/activity-groups?email=test@gmail.com", "GET");
   };
 
   createActivities = async (props: Activities) => {
-    return await this.fetch("/activity-groups", "POST", {
+    return await this.fetchjson("/activity-groups", "POST", {
       json: {
         ...props,
       },
@@ -113,7 +112,7 @@ class Activity extends CoreAPI {
   };
 
   updateActivities = async (id: number, props: Activities) => {
-    return await this.fetch(`/activity-groups/${id}`, "PATCH", {
+    return await this.fetchjson(`/activity-groups/${id}`, "PATCH", {
       json: {
         ...props,
       },
