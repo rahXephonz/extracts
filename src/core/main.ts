@@ -1,5 +1,4 @@
 import { encode } from "qss";
-import type { UnfetchResponse } from "./fetch";
 import _fetch from "unfetch";
 
 enum MethodKey {
@@ -28,6 +27,17 @@ interface Errors {
   response?: {
     [k: string]: any;
   };
+}
+
+export interface UnfetchResponse<Res = any> {
+  ok: boolean;
+  statusText: string;
+  status: number;
+  url: string;
+  text: () => Promise<string>;
+  json: () => Promise<Res>;
+  blob: () => Promise<Blob>;
+  clone: () => UnfetchResponse<Res>;
 }
 
 export class Extracts {
@@ -113,7 +123,7 @@ export class Extracts {
     }
   };
 
-  protected fetchjson = async <TypeResult>(
+  protected extracts = async <TypeResult>(
     path = "/",
     method: keyof typeof MethodKey,
     { body, json, params, headers, manualUrl = false, isPrivate = this.isPrivate, ...opts }: Partial<FetchOptions> = {},

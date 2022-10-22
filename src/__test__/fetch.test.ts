@@ -1,7 +1,7 @@
-import { fetchJSON } from "../core/fetch";
+import { ex } from "..";
 
 async function withFetch() {
-  const res = await fetchJSON<any[]>("https://jsonplaceholder.typicode.com/users");
+  const res = await ex.get<any[]>("https://jsonplaceholder.typicode.com/users").then(res => res.json());
   const json = res;
 
   return json;

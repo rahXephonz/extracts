@@ -34,7 +34,7 @@ Run one of the following command inside your project directory to install the pa
 
 ```typescript
 // test with zod and React
-import { fetchJSON } from "extracts";
+import { ex } from "extracts";
 import z from "zod";
 
 const TypeUser = z.objects({
@@ -50,7 +50,7 @@ const [user, setUser] = useState<UserDatum[]>([]);
 useEffect(() => {
   // this code will running as async
   (async function () {
-    const res = await fetchJSON<UserDatum[]>("https://jsonplaceholder.typicode.com/users");
+    const res = await ex.fetchJSON<UserDatum[]>("https://jsonplaceholder.typicode.com/users");
 
     setUser(res);
   })();
@@ -92,19 +92,19 @@ export class CoreAPI extends Extracts {
 
 class Activity extends CoreAPI {
   getDetailActivities = async (id: number) => {
-    return await this.fetchjson<Activities>(`/activity-groups/${id}`, "GET");
+    return await this.extracts<Activities>(`/activity-groups/${id}`, "GET");
   };
 
   deleteActivities = async (id: number) => {
-    return await this.fetchjson(`/activity-groups/${id}`, "DELETE");
+    return await this.extracts(`/activity-groups/${id}`, "DELETE");
   };
 
   getAllActivities = async () => {
-    return await this.fetchjson<{ data: Activities[] }>("/activity-groups?email=test@gmail.com", "GET");
+    return await this.extracts<{ data: Activities[] }>("/activity-groups?email=test@gmail.com", "GET");
   };
 
   createActivities = async (props: Activities) => {
-    return await this.fetchjson("/activity-groups", "POST", {
+    return await this.extracts("/activity-groups", "POST", {
       json: {
         ...props,
       },
@@ -112,7 +112,7 @@ class Activity extends CoreAPI {
   };
 
   updateActivities = async (id: number, props: Activities) => {
-    return await this.fetchjson(`/activity-groups/${id}`, "PATCH", {
+    return await this.extracts(`/activity-groups/${id}`, "PATCH", {
       json: {
         ...props,
       },
