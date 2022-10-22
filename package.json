@@ -1,6 +1,6 @@
 {
   "name": "extracts",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "a package that simplyfy your fetch request with type definitions",
   "private": false,
   "homepage": "https://github.com/ioofy/extracts",
