@@ -1,6 +1,6 @@
 {
   "name": "extracts",
-  "version": "1.0.9",
+  "version": "1.9.0",
   "description": "a package that simplyfy your fetch request with type definitions",
   "private": false,
   "homepage": "https://github.com/ioofy/extracts",
@@ -8,6 +8,12 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "license": "MIT",
+  "keywords": [
+    "extracts",
+    "fetch",
+    "fetch API",
+    "clientside fetch API"
+  ],
   "scripts": {
     "prepare": "husky install",
     "build": "rollup -c",

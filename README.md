@@ -45,12 +45,12 @@ const TypeUser = z.objects({
 
 type UserDatum = z.infer<typeof TypeUser>;
 
-const [user, setUser] = useState<UserDatum[]>([]);
+const [user, setUser] = useState<Array<UserDatum>>([]);
 
 useEffect(() => {
   // this code will running as async
   (async function () {
-    const res = await ex.fetchJSON<UserDatum[]>("https://jsonplaceholder.typicode.com/users");
+    const res = await ex.fetchJSON<Array<UserDatum>>("https://jsonplaceholder.typicode.com/users");
 
     setUser(res);
   })();
@@ -63,15 +63,45 @@ useEffect(() => {
 
 ```typescript
 // will be convert to
-const res = await fetch("https://jsonplaceholder.typicode.com/users").then(resp => resp.json);
 // but adding type definitions
-const data = res.map(item => item);
+const res = await fetch("https://jsonplaceholder.typicode.com/users").then(resp => resp.json);
+
 // and in above example we assign into state ;)
+setUser(res);
 ```
 
 </td>
 </tr>
 </table>
+
+### Fetching API with customize headers or authorization headers
+
+```typescript
+// cart-services
+const { getToken } = getClientSideAuth();
+
+const authHeaders: {
+  "Content-Type": "application/json";
+  Accept: "application/json";
+  Authorization: `Bearer ${getToken}`;
+  // .. other customizations
+};
+
+const getListCart = () => {
+  const res = await ex.fetchJSON<Array<CartType>>("https://api.yourapp.com/v1/list-cart", {
+    headers: { ...authHeaders },
+  });
+
+  return res;
+};
+
+const getVoucher = () => {
+  // in here we didn't provide headers because default headers it was setup by default
+  const res = await ex.fetchJSON<Array<VoucherType>>("https://api.yourapp.com/v1/get-voucher");
+
+  return res;
+};
+```
 
 ### Extends Extracts into your service API
 
@@ -80,14 +110,26 @@ import { Activities } from "@types/data";
 import { Extracts } from "extracts";
 
 export class CoreAPI extends Extracts {
-  // override url and assign your api url, and assign this service is private
+  // override url and assign your api url, and assign this service
+  // private is if services API is private and need a authorization
   // default url API is "/" and private false
 
   constructor() {
-    super("/api/your-path", true);
+    super("/api/your-path");
   }
 
   // your logic API goes here when use token or not (isPrivate)
+
+  getToken(): string {
+    // somehow you get token
+    const { token } = getClientAuth();
+
+    return token;
+  }
+
+  setToken({ token }: { token: string }) {
+    cookie.set("token", token, { expires: 7, path: "/" });
+  }
 }
 
 class Activity extends CoreAPI {
@@ -96,11 +138,13 @@ class Activity extends CoreAPI {
   };
 
   deleteActivities = async (id: number) => {
-    return await this.extracts(`/activity-groups/${id}`, "DELETE");
+    return await this.extracts(`/activity-groups/${id}`, "DELETE", {
+      isPrivate: true,
+    });
   };
 
   getAllActivities = async () => {
-    return await this.extracts<{ data: Activities[] }>("/activity-groups?email=test@gmail.com", "GET");
+    return await this.extracts<{ data: Array<Activities> }>("/activity-groups?email=test@gmail.com", "GET");
   };
 
   createActivities = async (props: Activities) => {
@@ -117,6 +161,25 @@ class Activity extends CoreAPI {
         ...props,
       },
     });
+  };
+}
+
+class Auth extends CoreAPI {
+  login = async ({ email, password }: { email: string; password: string }) => {
+    const data = await this.extracts("/sign_in", "POST", {
+      json: {
+        email,
+        password,
+      },
+    });
+
+    if (data?.meta?.token) {
+      this.setToken({
+        token: data?.meta?.token,
+      });
+    }
+
+    return data;
   };
 }
 ```

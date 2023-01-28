@@ -46,8 +46,10 @@ export class Extracts {
     this.isPrivate = isPrivate;
   }
 
-  getToken() {
+  getToken(): string {
     // your code in here how you get your token
+
+    return "";
   }
 
   setToken() {
@@ -55,7 +57,7 @@ export class Extracts {
   }
 
   private async ErrorResponse(err: Errors) {
-    const msg = err as Errors;
+    const msg = err;
     process.env.NODE_ENV === "development" && console.log("err", err);
 
     if (err instanceof Error) {
@@ -92,15 +94,26 @@ export class Extracts {
   };
 
   protected fetch = async <TypeResult>(
-    path = "/",
     method: keyof typeof MethodKey,
     { body, json, params, headers, manualUrl = false, isPrivate = this.isPrivate, ...opts }: Partial<FetchOptions> = {},
+    path = "/",
   ): Promise<UnfetchResponse<TypeResult>> => {
     const search = params ? encode(params, "?") : "";
 
     const url = manualUrl ? path : `${this.urlApi}${path}${search}`;
 
-    if (isPrivate) this.getToken();
+    if (isPrivate) {
+      const token = this.getToken();
+
+      if (token) {
+        headers = {
+          ...headers,
+          Authorization: `Bearer ${token}`,
+        };
+
+        sessionStorage.setItem("token", token);
+      }
+    }
 
     try {
       const resp = await _fetch(url, {
@@ -124,15 +137,26 @@ export class Extracts {
   };
 
   protected extracts = async <TypeResult>(
-    path = "/",
     method: keyof typeof MethodKey,
     { body, json, params, headers, manualUrl = false, isPrivate = this.isPrivate, ...opts }: Partial<FetchOptions> = {},
+    path = "/",
   ): Promise<TypeResult> => {
     const search = params ? encode(params, "?") : "";
 
     const url = manualUrl ? path : `${this.urlApi}${path}${search}`;
 
-    if (isPrivate) this.getToken();
+    if (isPrivate) {
+      const token = this.getToken();
+
+      if (token) {
+        headers = {
+          ...headers,
+          Authorization: `Bearer ${token}`,
+        };
+
+        sessionStorage.setItem("token", token);
+      }
+    }
 
     try {
       const resp = await _fetch(url, {
@@ -151,7 +175,8 @@ export class Extracts {
         return await Promise.resolve({} as TypeResult);
       }
 
-      let jsonBody = (await resp?.json()) as TypeResult;
+      let jsonBody = await resp?.json();
+
       if (!resp?.ok) {
         return await Promise.reject(jsonBody);
       }
@@ -159,6 +184,12 @@ export class Extracts {
       let responseBody = {
         ...jsonBody,
       };
+
+      if (resp.headers.get("token")) {
+        responseBody.meta = {
+          token: resp.headers.get("token"),
+        };
+      }
 
       if (Array.isArray(jsonBody)) {
         responseBody = [...jsonBody] as TypeResult;
