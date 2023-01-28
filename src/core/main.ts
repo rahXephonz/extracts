@@ -47,14 +47,11 @@ export class Extracts {
   }
 
   getToken(): string {
-    // your code in here how you get your token
-
     return "";
   }
 
-  setToken() {
-    // your code in here how you set your token
-  }
+  // eslint-disable-next-line no-empty-pattern
+  setToken({}: Object) {}
 
   private async ErrorResponse(err: Errors) {
     const msg = err;

@@ -1,6 +1,6 @@
 {
-  "name": "extracts",
-  "version": "1.1.1",
+  "name": "extracts-api",
+  "version": "0.0.1",
   "description": "a package that simplyfy your fetch request with type definitions",
   "private": false,
   "homepage": "https://github.com/ioofy/extracts",
@@ -10,7 +10,7 @@
   "types": "dist/index.d.ts",
   "license": "MIT",
   "keywords": [
-    "extracts",
+    "extracts-api",
     "fetch",
     "fetch API",
     "clientside fetch API"

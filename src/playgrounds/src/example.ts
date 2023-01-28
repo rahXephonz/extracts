@@ -1,5 +1,7 @@
 import { Extracts, ex } from "../..";
 
+const setCookie = (kuki: string) => kuki;
+
 export class CoreAPI extends Extracts {
   constructor() {
     super("https://api.yourapi.com");
