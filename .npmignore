@@ -111,3 +111,4 @@ rollup.config.js
 tsconfig.json
 .gitignore
 .husky
+.parcel-cache

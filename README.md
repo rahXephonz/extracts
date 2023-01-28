@@ -87,20 +87,26 @@ const authHeaders: {
   // .. other customizations
 };
 
+const apiClient = "https://api.yourapp.com/v1";
+
 const getListCart = () => {
-  const res = await ex.fetchJSON<Array<CartType>>("https://api.yourapp.com/v1/list-cart", {
+  const res = await ex.get<Array<CartType>>(`${apiClient}/list-cart`, {
     headers: { ...authHeaders },
   });
 
-  return res;
+  return await res.json();
 };
 
 const getVoucher = () => {
   // in here we didn't provide headers because default headers it was setup by default
-  const res = await ex.fetchJSON<Array<VoucherType>>("https://api.yourapp.com/v1/get-voucher");
+  // and not need authorization
+  const res = await ex.fetchjson<Array<VoucherType>>(`${apiClient}/get-voucher`);
 
-  return res;
+  return await res;
 };
+
+getListCart().then(res => console.log("fromjson", res));
+getVoucher().then(res => console.log("from get", res));
 ```
 
 ### Extends Extracts into your service API

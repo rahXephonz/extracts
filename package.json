@@ -5,6 +5,7 @@
   "private": false,
   "homepage": "https://github.com/ioofy/extracts",
   "repository": "https://github.com/ioofy/extracts",
+  "source": "./src/playgrounds/index.html",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "license": "MIT",
@@ -20,6 +21,7 @@
     "rebuild": "rimraf dist && yarn build",
     "dev": "yarn build --watch",
     "test": "jest",
+    "playgrounds": "parcel",
     "prepublish": "yarn test && yarn rebuild"
   },
   "dependencies": {
@@ -45,6 +47,7 @@
     "jest-environment-jsdom": "^29.2.1",
     "lint-staged": "^11.2.6",
     "prettier": "^2.3.2",
+    "parcel": "^2.7.0",
     "rimraf": "^3.0.0",
     "rollup": "^2.22.1",
     "rollup-plugin-dts": "^4.2.2",

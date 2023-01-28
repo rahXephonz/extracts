@@ -100,3 +100,4 @@ $RECYCLE.BIN/
 
 # Cache
 .eslintcache
+.parcel-cache

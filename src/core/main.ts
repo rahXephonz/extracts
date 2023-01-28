@@ -94,9 +94,9 @@ export class Extracts {
   };
 
   protected fetch = async <TypeResult>(
+    path = "/",
     method: keyof typeof MethodKey,
     { body, json, params, headers, manualUrl = false, isPrivate = this.isPrivate, ...opts }: Partial<FetchOptions> = {},
-    path = "/",
   ): Promise<UnfetchResponse<TypeResult>> => {
     const search = params ? encode(params, "?") : "";
 
@@ -137,9 +137,9 @@ export class Extracts {
   };
 
   protected extracts = async <TypeResult>(
+    path = "/",
     method: keyof typeof MethodKey,
     { body, json, params, headers, manualUrl = false, isPrivate = this.isPrivate, ...opts }: Partial<FetchOptions> = {},
-    path = "/",
   ): Promise<TypeResult> => {
     const search = params ? encode(params, "?") : "";
 
@@ -184,12 +184,6 @@ export class Extracts {
       let responseBody = {
         ...jsonBody,
       };
-
-      if (resp.headers.get("token")) {
-        responseBody.meta = {
-          token: resp.headers.get("token"),
-        };
-      }
 
       if (Array.isArray(jsonBody)) {
         responseBody = [...jsonBody] as TypeResult;
