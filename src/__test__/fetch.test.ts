@@ -1,24 +1,17 @@
 import { ex } from "..";
 
 async function withFetch() {
-  const res = await ex.get<Array<any>>("https://jsonplaceholder.typicode.com/users").then(res => res.json());
-  const json = res;
+  const res = await ex.get<Array<any>>("https://jsonplaceholder.typicode.com/users");
 
-  return json;
+  return res;
 }
 
-// This is the section where we mock `fetch`
-const unmockedFetch = global.fetch;
-
+// Mockup the API
 beforeAll(() => {
   global.fetch = () =>
     Promise.resolve({
-      json: () => Promise.resolve([]),
+      json: () => Promise.resolve([{ id: 1, name: "John" }]),
     } as unknown as Promise<Response>);
-});
-
-afterAll(() => {
-  global.fetch = unmockedFetch;
 });
 
 // This is actual testing suite
@@ -27,6 +20,7 @@ describe("withFetch", () => {
     const res = await withFetch();
 
     expect(Array.isArray(res)).toEqual(true);
-    expect(res.length).toEqual(10);
+    expect(res.length).toEqual(1);
+    expect(res[0]).toEqual({ id: 1, name: "John" });
   });
 });
