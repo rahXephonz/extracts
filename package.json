@@ -1,13 +1,13 @@
 {
   "name": "extracts-api",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "a package that extracts your api request with type definitions",
   "private": false,
   "homepage": "https://github.com/ioofy/extracts",
   "repository": "https://github.com/ioofy/extracts",
   "source": "./playgrounds/index.html",
-  "main": "dist/main.js",
-  "types": "dist/main.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "license": "MIT",
   "keywords": [
     "extracts-api",

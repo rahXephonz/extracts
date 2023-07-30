@@ -1,29 +1,27 @@
 <div align="center">
-<h1 id="toc">⚡️ Extracts</h1>
+<h1>⚡️ Extracts-API</h1>
 <p>extracts your request API with type definitions using fetch</p>
 </div>
 
 <div align="center">
 
-<!-- prettier-ignore-start -->
-
-[![npm downloads](https://img.shields.io/npm/dw/extracts)](https://www.npmjs.com/package/extracts/v/latest)
-[![License](https://img.shields.io/github/license/ioofy/extracts)](https://github.com/ioofy/extracts/blob/main/LICENSE)
-
-<!-- prettier-ignore-end -->
+[![npm downloads](https://img.shields.io/npm/dw/extracts-api)](https://www.npmjs.com/package/extracts-api/v/latest)
+[![License](https://img.shields.io/github/license/ioofy/extracts)](https://github.com/ioofy/extracts-aip/blob/main/LICENSE)
 
 </div>
 
 ## Installation
 
+Installation with latest version
+
 ```bash
-npm install extracts-api
+npm install extracts-api@latest
 ```
 
 or
 
 ```bash
-yarn add extracts-api
+yarn add extracts-api@latest
 ```
 
 # Usage
@@ -44,25 +42,25 @@ class CoreAPI extends Extracts {
     return `Bearer ${token}`;
   }
 
+  public setToken(token: string) {
+    jsCookie.set("key", token, {
+      expires: 7,
+      secure: true,
+      sameSite: "Lax",
+    });
+  }
+
   constructor() {
     super({ baseURL: "https://api.example.com" });
 
     // Override for get method token
     this.getToken = this.customGetToken;
   }
-
-  public setToken(token: string) {
-    jsCookie.set("key", token, {
-      expires: 7,
-      path: "/",
-      secure: true,
-      sameSite: "Lax",
-    });
-  }
 }
 
 class UserAPI extends CoreAPI {
   // isPrivate API that need a token authorization Bearer
+
   getUsers = async () => {
     return await this.fetch<Users>("/users", "GET", { isPrivate: true });
   };
@@ -117,6 +115,7 @@ const extracts = ({ isPrivate }: { isPrivate: boolean }) => {
 
 export const userAPI = {
   getUsers: async () => {
+    // need authorization
     return extracts({ isPrivate: true }).fetch<Users>("/users", "GET");
   },
 };
@@ -163,7 +162,6 @@ Make a fetch request to the API.
   - `params` (object, optional): URL parameters to be included in the request URL.
   - `headers` (object, optional): Custom headers to be included in the request. These headers will override the instance's default headers.
   - `isPrivate` (boolean, optional): Set to true if the request requires authorization. Default is false.
-  - `local` (boolean, optional): Set to true if the request should be made to a local endpoint. Default is false.
   - `manualUrl` (boolean, optional): Set to true if you want to manually provide the full request URL. Default is false.
 
 #### Method: `getToken(): string`
@@ -182,7 +180,7 @@ Create a new instance of the `CoreAPI` class.
 
 A custom method to retrieve the access token used for authorization. Override this method to provide custom token retrieval logic.
 
-### Class: `Random extends CoreAPI`
+### Class: `UserAPI extends CoreAPI`
 
 An extended class for additional functionalities based on `CoreAPI`.
 

@@ -11,11 +11,9 @@ enum MethodKey {
 export interface FetchOptions {
   body: FormData;
   json: object;
-  mode: string;
   params: object;
   headers: object;
   isPrivate: boolean;
-  local: boolean;
   manualUrl: boolean;
 }
 
@@ -28,7 +26,10 @@ export class Extracts {
   private headers: FetchOptions["headers"];
 
   constructor(
-    options: { baseURL: string; headers?: FetchOptions["headers"] } = { baseURL: "", headers: {} },
+    options: {
+      baseURL: string;
+      headers?: FetchOptions["headers"];
+    } = { baseURL: "", headers: {} },
   ) {
     this.baseUrl = options.baseURL;
     this.headers = options.headers;

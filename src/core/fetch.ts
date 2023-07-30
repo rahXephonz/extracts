@@ -1,29 +1,33 @@
 import { Extracts, type FetchOptions } from "./main";
 
-type OptionalFetch = Partial<FetchOptions>;
+type OptionalFetch = Partial<Omit<FetchOptions, "isPrivate" | "manualUrl">>;
 
-class Fetch extends Extracts {
-  get = async <R>(url: string, prop?: OptionalFetch) => {
-    return await this.fetch<R>(url, "GET", { ...prop });
+class Fetch {
+  private ex: Extracts;
+
+  constructor() {
+    this.ex = new Extracts();
+  }
+
+  get = async <R>(url: string, fetchOptions?: OptionalFetch) => {
+    return await this.ex.fetch<R>(url, "GET", { ...fetchOptions });
   };
 
-  put = async <R>(url: string, prop?: OptionalFetch) => {
-    return await this.fetch<R>(url, "PUT", { ...prop });
+  put = async <R>(url: string, fetchOptions?: OptionalFetch) => {
+    return await this.ex.fetch<R>(url, "PUT", { ...fetchOptions });
   };
 
-  delete = async <R>(url: string, prop?: OptionalFetch) => {
-    return await this.fetch<R>(url, "DELETE", { ...prop });
+  delete = async <R>(url: string, fetchOptions?: OptionalFetch) => {
+    return await this.ex.fetch<R>(url, "DELETE", { ...fetchOptions });
   };
 
-  patch = async <R>(url: string, prop?: OptionalFetch) => {
-    return await this.fetch<R>(url, "PATCH", { ...prop });
+  patch = async <R>(url: string, fetchOptions?: OptionalFetch) => {
+    return await this.ex.fetch<R>(url, "PATCH", { ...fetchOptions });
   };
 
-  post = async <R>(url: string, prop?: OptionalFetch) => {
-    return await this.fetch<R>(url, "POST", { ...prop });
+  post = async <R>(url: string, fetchOptions?: OptionalFetch) => {
+    return await this.ex.fetch<R>(url, "POST", { ...fetchOptions });
   };
 }
 
-export const ex = {
-  ...new Fetch(),
-};
+export const ex = { ...new Fetch() };
