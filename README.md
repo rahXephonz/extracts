@@ -116,7 +116,7 @@ const extracts = ({ isPrivate }: { isPrivate: boolean }) => {
 export const userAPI = {
   getUsers: async () => {
     // need authorization
-    return extracts({ isPrivate: true }).fetch<Users>("/users", "GET");
+    return await extracts({ isPrivate: true }).fetch<Users>("/users", "GET");
   },
 };
 ```

@@ -35,6 +35,11 @@ export class Extracts {
     this.headers = options.headers;
   }
 
+  /**
+   * Retrieves the authentication token.
+   *
+   * @returns The authentication token as a string.
+   */
   getToken(): string {
     return "";
   }
@@ -120,6 +125,15 @@ export class Extracts {
     }
   }
 
+  /**
+   * Sends a HTTP request to the specified path using the specified method.
+   *
+   * @param path - The path to send the request to. Defaults to "/" if not provided.
+   * @param method - The HTTP method to use for the request. Allowed values are "GET", "POST", "PUT", "PATCH", and "DELETE".
+   * @param options - Optional fetch options to customize the request.
+   * @returns A promise that resolves to the response data.
+   * @typeParam R - The type of the response data. Defaults to `any` if not provided.
+   */
   fetch = async <R = any>(
     path = "/",
     method: keyof typeof MethodKey,

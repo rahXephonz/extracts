@@ -1,6 +1,6 @@
 {
   "name": "extracts-api",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "description": "a package that extracts your api request with type definitions",
   "private": false,
   "homepage": "https://github.com/ioofy/extracts",
